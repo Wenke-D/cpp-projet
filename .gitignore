@@ -1,0 +1,9 @@
+# folder for intermediare output
+build
+
+# Final output
+labh
+labh.exe
+
+# Mac specific files
+.DS_Store
