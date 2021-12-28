@@ -1,5 +1,9 @@
 # Projet CPP
 
+c++ version: c++11
+c version: c11
+
+
 ## Exécutable
 L'exécutable sera produit à la racine du projet, nommé `labh` ou `labh.exe` selon le système de compilation.
 
@@ -18,3 +22,8 @@ L'excutable est produit à l'aide du `makefile`. Il est compatible dans Linux et
 - **res**: Toutes les ressources externes, comme images, sons.
 - **src**: Codes source, on n'accepte que `.cc`
 - **test**: Codes de test
+
+
+
+énoncé
+https://www.lri.fr/~pa/progcxx.html

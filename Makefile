@@ -65,9 +65,9 @@ SRC_EXT = cc
 
 # ======================== Need Manual Update =======================
 # source filesnames
-SOURCES = Chasseur.cc Labyrinthe.cc
+SOURCES = Chasseur.cc Labyrinthe.cc config.cc
 # header filenames
-HEADERS = Chasseur.h Environnement.h FireBall.h Gardien.h Labyrinthe.h Mover.h Sound.h
+HEADERS = Chasseur.h Environnement.h FireBall.h Gardien.h Labyrinthe.h Mover.h Sound.h config.h
 # ===================================================================
 
 # all source filenames with path and extension
@@ -104,12 +104,12 @@ endif
 # 	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
 
 # Default rule for .o file with corresponding .h file
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT) $(INC_DIR)/%.h
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT) $(INC_DIR)/%.h $(H)
 	@echo Making $@
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
 # Default rule for individual .o file
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.$(SRC_EXT) $(H)
 	@echo Making $@
 	$(CXX) $(CXXFLAGS)  -c $< -o $@ 
 
@@ -120,11 +120,5 @@ clean_targets =  $(TARGET) $(O)
 endif
 clean:
 	$(RM) $(clean_targets)
-
-test:
-	@echo $(SRC)
-	@echo $(O)
-	@echo $(H)
-
 
 .PHONY: clean test

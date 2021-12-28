@@ -1,5 +1,14 @@
 #include "Chasseur.h"
 
+
+
+const string HUNTER_FIRE_SOUND_PATH = get_sound_path("hunter_fire.wav");
+const string HUNTER_HIT_SOUND_PATH = get_sound_path("hunter_hit.wav");
+const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
+
+
+
+
 /*
  *	Tente un deplacement.
  */
@@ -23,14 +32,14 @@ bool Chasseur::move_aux (double dx, double dy)
 Chasseur::Chasseur (Labyrinthe* l) : Mover (100, 80, l, 0)
 {
 	// initialise les sons.
-	_hunter_fire = new Sound ("sons/hunter_fire.wav");
-	_hunter_hit = new Sound ("sons/hunter_hit.wav");
+	_hunter_fire = new Sound (HUNTER_FIRE_SOUND_PATH.c_str());
+	_hunter_hit = new Sound (HUNTER_HIT_SOUND_PATH.c_str());
 	if (_wall_hit == 0)
-		_wall_hit = new Sound ("sons/hit_wall.wav");
+		_wall_hit = new Sound (HIT_WALL_SOUND_PATH.c_str());
 }
 
 /*
- *	Fait bouger la boule de feu (ceci est une exemple, à vous de traiter les collisions spécifiques...)
+ *	Fait bouger la boule de feu (ceci est une exemple, Ã  vous de traiter les collisions spï¿½cifiques...)
  */
 
 bool Chasseur::process_fireball (float dx, float dy)
@@ -65,14 +74,14 @@ void Chasseur::fire (int angle_vertical)
 	message ("Woooshh...");
 	_hunter_fire -> play ();
 	_fb -> init (/* position initiale de la boule */ _x, _y, 10.,
-				 /* angles de visée */ angle_vertical, _angle);
+				 /* angles de visï¿½e */ angle_vertical, _angle);
 }
 
 /*
- *	Clic droit: par défaut fait tomber le premier gardien.
+ *	Clic droit: par dï¿½faut fait tomber le premier gardien.
  *
  *	Inutile dans le vrai jeu, mais c'est juste pour montrer
- *	une utilisation des fonctions « tomber » et « rester_au_sol »
+ *	une utilisation des fonctions ï¿½ tomber ï¿½ et ï¿½ rester_au_sol ï¿½
  */
 
 void Chasseur::right_click (bool shift, bool control)
