@@ -1,6 +1,6 @@
 RM = rm -rf
 EXE =
-OPT = -O3
+OPT = -O2
 #
 #	Compilation on Windows for Windows
 #
@@ -64,10 +64,16 @@ LIB_DIR = lib
 SRC_EXT = cc
 
 # ======================== Need Manual Update =======================
-# source filesnames
-SOURCES = Chasseur.cc Labyrinthe.cc config.cc
+FIXED_HEADERS = Environnement.h Mover.h FireBall.h Sound.h
+
+OBJS = Chasseur Labyrinthe config MapData Location Decoration Picture
+
+SINGLE_HEADERS = Gardien.h
+
+# source filenames
+SOURCES = $(addsuffix .cc,$(OBJS))
 # header filenames
-HEADERS = Chasseur.h Environnement.h FireBall.h Gardien.h Labyrinthe.h Mover.h Sound.h config.h
+HEADERS = $(FIXED_HEADERS) $(addsuffix .h,$(OBJS)) $(SINGLE_HEADERS)
 # ===================================================================
 
 # all source filenames with path and extension
@@ -120,5 +126,9 @@ clean_targets =  $(TARGET) $(O)
 endif
 clean:
 	$(RM) $(clean_targets)
+
+run: $(TARGET)
+	$< .\res\map\labyrinthe.txt
+
 
 .PHONY: clean test

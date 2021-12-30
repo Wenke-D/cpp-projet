@@ -1,10 +1,16 @@
 #ifndef LABYRINTHE_H
 #define LABYRINTHE_H
 
-#include "Environnement.h"
+#include <algorithm>
 
-#define LAB_WIDTH 80
-#define LAB_HEIGHT 25
+
+#include "Environnement.h"
+#include "MapData.h"
+
+
+
+class MapData;
+
 
 class Labyrinthe : public Environnement {
   private:
@@ -22,12 +28,12 @@ class Labyrinthe : public Environnement {
 
 
 private:
-	void renderWall();
-	void renderPictures();
-	void renderBoxes();
-	void renderMarks();
-	void renderTreasure();
-	void renderGuards();
+	void renderWall(MapData* map);
+	void renderPictures(MapData* map);
+	void renderBoxes(MapData* map);
+	void renderMarks(MapData* map);
+	void renderTreasure(MapData* map);
+	void renderGuards(MapData* map);
 	/**
 	 * Set where roles can't walk through.
 	 */

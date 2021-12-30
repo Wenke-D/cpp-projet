@@ -2,6 +2,13 @@
 #include "Chasseur.h"
 #include "Gardien.h"
 
+#include <iostream>
+
+template <typename T> T *arrayFromVector(vector<T> *v);
+
+const int PICTURE_OFFSET = 2;
+
+
 Sound *Chasseur::_hunter_fire; // bruit de l'arme du chasseur.
 Sound *Chasseur::_hunter_hit;  // cri du chasseur touché.
 Sound *Chasseur::_wall_hit;    // on a tapé un mur.
@@ -11,112 +18,106 @@ Environnement *Environnement::init(char *filename) {
 }
 
 Labyrinthe::Labyrinthe(char *filename) {
-    // global configurations
-    this->modele_dir = MODELE_DIR.c_str();
-    this->texture_dir = TEXTURE_DIR.c_str();
-    this->renderWall();
-    this->renderPictures();
-    this->renderBoxes();
-    this->renderMarks();
-    this->renderTreasure();
-    this->renderGuards();
+    // configurations of res path
+    modele_dir = MODELE_DIR.c_str();
+    texture_dir = TEXTURE_DIR.c_str();
+
+    MapData *map = MapData::init(filename);
+
+    renderWall(map);
+    renderPictures(map);
+    renderBoxes(map);
+    renderMarks(map);
+    renderTreasure(map);
+    renderGuards(map);
     setObstacles();
+
+    delete map;
 }
 
-void Labyrinthe::renderWall() {
-    // les 4 murs.
-    static Wall walls[] = {
-        {0, 0, LAB_WIDTH - 1, 0, 0},
-        {LAB_WIDTH - 1, 0, LAB_WIDTH - 1, LAB_HEIGHT - 1, 0},
-        {LAB_WIDTH - 1, LAB_HEIGHT - 1, 0, LAB_HEIGHT - 1, 0},
-        {0, LAB_HEIGHT - 1, 0, 0, 0},
-    };
+void Labyrinthe::renderWall(MapData *map) {
 
     // les 4 murs.
-    _nwall = 4;
+    _nwall = map->walls->size();
+    Wall *walls = arrayFromVector(map->walls);
     _walls = walls;
 }
-void Labyrinthe::renderPictures() {
-    // une affiche.
-    //  (attention: pour des raisons de rapport d'aspect, les affiches doivent
-    //  faire 2 de long)
-    static Wall affiche[] = {
-        {4, 0, 6, 0, 0},  // première affiche.
-        {8, 0, 10, 0, 0}, // autre affiche.
-    };
+
+void Labyrinthe::renderPictures(MapData *map) {
+    auto pics = map->pictures;
+    vector<Wall> *pictures = new vector<Wall>;
+
+    std::for_each(pics->begin(), pics->end(), [pictures, this](Picture p) {
+        char *t = new char[p.image.size() + 1];
+        strcpy(t, get_texture_path(p.image).c_str());
+
+        Wall pic = {p.start.x, p.start.y, p.end.x, p.end.y, wall_texture(t)};
+        pictures->push_back(pic);
+    });
     // deux affiches.
-    _npicts = 2;
-    _picts = affiche;
-
-    // la deuxième à une texture différente.
-    char tmp[128];
-    // sprintf(tmp, "%s/%s", texture_dir, "voiture.jpg");
-    strcpy(tmp, get_texture_path("voiture.jpg").c_str());
-    _picts[1]._ntex = wall_texture(tmp);
+    _npicts = map->pictures->size();
+    _picts = arrayFromVector(pictures);
 }
-void Labyrinthe::renderBoxes() {
-    // 3 caisses.
-    static Box caisses[] = {
-        {70, 12, 0},
-        {10, 5, 0},
-        {65, 22, 0},
-    };
 
-    // 3 caisses.
-    _nboxes = 3;
-    _boxes = caisses;
-
+void Labyrinthe::renderBoxes(MapData *map) {
+    // use a more beautiful box texture
     char tmp[128];
-
-    /* DEB - NOUVEAU */
-    // mettre une autre texture à la deuxième caisse.
     strcpy(tmp, get_texture_path("boite.jpg").c_str());
-    caisses[1]._ntex = wall_texture(tmp);
+    int texture_number = wall_texture(tmp);
+
+    vector<Location> *boxes_info = map->boxes;
+    vector<Box> *boxes = new vector<Box>;
+
+    for (size_t i = 0; i < boxes_info->size(); i++) {
+        Location l = (*boxes_info)[i];
+        boxes->push_back({l.x, l.y, texture_number});
+    }
+
+    _nboxes = boxes->size();
+    _boxes = arrayFromVector(boxes);
 }
 
-void Labyrinthe::renderMarks() {
-    // 2 marques au sol.
-    static Box marques[] = {
-        {50, 14, 0},
-        {20, 15, 0},
-    };
-
-    // la deuxième à une texture différente.
+void Labyrinthe::renderMarks(MapData *map) {
     char tmp[128];
 
-    // mettre les marques au sol.
-    strcpy(tmp, get_texture_path("p1.gif").c_str());
-    marques[0]._ntex = wall_texture(tmp);
+    vector<Box> *marks = new vector<Box>;
+    for (size_t i = 0; i < map->marks->size(); i++) {
+        auto e = (*(map->marks))[i];
 
-    strcpy(tmp, get_texture_path("p3.gif").c_str());
-    marques[1]._ntex = wall_texture(tmp);
-    _nmarks = 2;
-    _marks = marques;
+        strcpy(tmp, get_texture_path(e.texture).c_str());
+        int texture_n = wall_texture(tmp);
+
+        marks->push_back({e.l.x, e.l.y, texture_n});
+    }
+    _nmarks = marks->size();
+    _marks = arrayFromVector(marks);
 }
-void Labyrinthe::renderTreasure() {
-    // le trésor.
-    _treasor._x = 10;
-    _treasor._y = 10;
+
+void Labyrinthe::renderTreasure(MapData *map) {
+    _treasor._x = map->treasure->x;
+    _treasor._y = map->treasure->x;
 }
-void Labyrinthe::renderGuards() {
+
+void Labyrinthe::renderGuards(MapData *map) {
     // le chasseur et les 4 gardiens.
-    _nguards = 5;
+    _nguards = map->guards->size() + 1;
+
     _guards = new Mover *[_nguards];
     _guards[0] = new Chasseur(this);
-    _guards[1] = new Gardien(this, "Lezard");
-    _guards[2] = new Gardien(this, "Blade");
-    _guards[2]->_x = 90.;
-    _guards[2]->_y = 70.;
-    _guards[3] = new Gardien(this, "Serpent");
-    _guards[3]->_x = 60.;
-    _guards[3]->_y = 10.;
-    _guards[4] = new Gardien(this, "Samourai");
-    _guards[4]->_x = 130.;
-    _guards[4]->_y = 100.;
+
+    vector<Decoration> data = *(map->guards);
+    for (int i = 0; i < _nguards - 1; i++) {
+        auto src = data[i];
+        cout << "index: " << i + 1 << '\n';
+        char *tmp = new char[128];
+        strcpy(tmp, src.texture.c_str());
+        _guards[i + 1] = new Gardien(this, tmp);
+        _guards[i + 1]->_x = src.l.x;
+        _guards[i + 1]->_y = src.l.y;
+    }
 }
 
 void Labyrinthe::setObstacles() {
-    // set where player can go
     // autour des mur
     for (int i = 0; i < LAB_WIDTH; ++i) {
         for (int j = 0; j < LAB_HEIGHT; ++j) {
@@ -141,4 +142,10 @@ void Labyrinthe::setObstacles() {
         int y = (int)(_guards[i]->_y / scale);
         _data[x][y] = FILL;
     }
+}
+
+template <typename T> T *arrayFromVector(vector<T> *v) {
+    T *array = new T[v->size()];
+    std::copy(v->begin(), v->end(), array);
+    return array;
 }
