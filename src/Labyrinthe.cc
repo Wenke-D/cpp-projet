@@ -31,8 +31,6 @@ Labyrinthe::Labyrinthe(char *filename) {
     renderTreasure(map);
     renderGuards(map);
     setObstacles();
-
-    delete map;
 }
 
 void Labyrinthe::renderWall(MapData *map) {

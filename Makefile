@@ -66,7 +66,7 @@ SRC_EXT = cc
 # ======================== Need Manual Update =======================
 FIXED_HEADERS = Environnement.h Mover.h FireBall.h Sound.h
 
-OBJS = Chasseur Labyrinthe config MapData Location Decoration Picture
+OBJS = Chasseur Labyrinthe config MapData Location Decoration Picture MapFile
 
 SINGLE_HEADERS = Gardien.h
 

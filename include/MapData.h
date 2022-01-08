@@ -7,6 +7,7 @@
 
 #include "Decoration.h"
 #include "Environnement.h"
+#include "MapFile.h"
 #include "Location.h"
 #include "Picture.h"
 
