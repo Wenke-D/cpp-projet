@@ -29,11 +29,13 @@ class MapData {
     Location *hunter;
     Location *treasure;
 
+    MapFile* map_file;
+
     MapData(vector<Wall> *walls, vector<Decoration> *guards,
             vector<Location> *boxes, vector<Picture> *pictures,
-            vector<Decoration> *marks, Location *hunter, Location *treasure)
+            vector<Decoration> *marks, Location *hunter, Location *treasure, MapFile* map_file)
         : walls(walls), guards(guards), boxes(boxes), pictures(pictures),
-          marks(marks), hunter(hunter), treasure(treasure){};
+          marks(marks), hunter(hunter), treasure(treasure), map_file(map_file){};
 
     /**
      * Make a mapData object from a map file.

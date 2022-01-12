@@ -1,29 +1,48 @@
 #include "MapFile.h"
 
-char **map_lines_to_grid(const vector<string> &lines, unsigned int width) {
+
+/**
+ * Make a grid of type T.
+ * @param width length of T**
+ * @param height length of T*
+ * @param T type of element
+ * @return T**
+ */
+template<typename T> T** make_grid(unsigned int width, unsigned int height){
+    T** data = new T*[width];
+    for (size_t i = 0; i < width; i++) {
+        data[i] = new T[height];
+    }
+
+    return data;
+}
+
+/**
+ * Convert a vector of string to a grid of char. the size of the vector will be height of grid.
+ * 
+ * Width is the size of char**, and height is size of char*
+ * 
+ */
+char** map_lines_to_grid(const vector<string> &lines, unsigned int width) {
     unsigned int height = lines.size();
 
     // allocation of mem for a dynamic 2d array
-    char **data = new char *[height];
-    for (size_t i = 0; i < height; i++) {
-        data[i] = new char[width];
-    }
+    char **grid = make_grid<char>(width, height);
 
     // copy map data to a 2d array
     // for each line
     for (size_t i = 0; i < height; i++) {
-        char *dst = data[i];
         string src = lines[i];
         // for each char
         for (size_t j = 0; j < width; j++) {
             if (j < src.size()) {
-                dst[j] = src[j];
+                grid[j][i] = src[j];
             } else {
-                dst[j] = EMPTY_CASE;
+                grid[j][i] = EMPTY_CASE;
             }
         }
     }
-    return data;
+    return grid;
 }
 
 /**
@@ -34,7 +53,7 @@ char **map_lines_to_grid(const vector<string> &lines, unsigned int width) {
  * @param map_structure_def vector that will contain lines of map structure
  * @return the length of the longest line in map structure definition
  */
-int separateFile(ifstream &f, vector<string> &pic_def,
+unsigned int separateFile(ifstream &f, vector<string> &pic_def,
                  vector<string> &map_structure_def) {
 
     string line;
@@ -46,7 +65,7 @@ int separateFile(ifstream &f, vector<string> &pic_def,
         if (line[0] <= 'z' && line[0] >= 'a') {
             pic_def.push_back(line);
         }
-
+        /* the first '+' symbol means the end of picture def and the begining of map structure */
         if (line[0] == CORNER) {
             map_structure_def.push_back(line);
             break;
@@ -62,9 +81,15 @@ int separateFile(ifstream &f, vector<string> &pic_def,
     return max_length;
 }
 
-char regex_filename[] = "([a-z])\t([\\w\\- ]+.[\\w\\- ]+)";
+/* Regular expression to recongnize a picture definition line */
+const char regex_filename[] = "([a-z])\t([\\w\\- ]+.[\\w\\- ]+)";
 
-void parseLine(const string &line, map<char, string> &container) {
+/**
+ * Parse the picture replacement rule of the input line and put the information in the comtainer map.
+ * @param line the input line
+ * @param container map container to put the final result
+ */
+void parsePicDefLine(const string &line, map<char, string> &container) {
     regex re(regex_filename);
     smatch result;
 
@@ -84,7 +109,7 @@ map<char, string> *parsePicture(const vector<string> &lines) {
     map<char, string> *res = new map<char, string>();
 
     for (string line : lines) {
-        parseLine(line, *res);
+        parsePicDefLine(line, *res);
     }
 
     return res;

@@ -1,12 +1,15 @@
 #include "Labyrinthe.h"
 #include "Chasseur.h"
 #include "Gardien.h"
+#include "toString.h"
 
 #include <iostream>
 
 template <typename T> T *arrayFromVector(vector<T> *v);
 
 const int PICTURE_OFFSET = 2;
+
+
 
 
 Sound *Chasseur::_hunter_fire; // bruit de l'arme du chasseur.
@@ -23,6 +26,10 @@ Labyrinthe::Labyrinthe(char *filename) {
     texture_dir = TEXTURE_DIR.c_str();
 
     MapData *map = MapData::init(filename);
+
+    _data = map->map_file->data;
+    _width = map->map_file->width;
+    _height = map->map_file->height;
 
     renderWall(map);
     renderPictures(map);
@@ -106,7 +113,6 @@ void Labyrinthe::renderGuards(MapData *map) {
     vector<Decoration> data = *(map->guards);
     for (int i = 0; i < _nguards - 1; i++) {
         auto src = data[i];
-        cout << "index: " << i + 1 << '\n';
         char *tmp = new char[128];
         strcpy(tmp, src.texture.c_str());
         _guards[i + 1] = new Gardien(this, tmp);
@@ -116,30 +122,49 @@ void Labyrinthe::renderGuards(MapData *map) {
 }
 
 void Labyrinthe::setObstacles() {
-    // autour des mur
-    for (int i = 0; i < LAB_WIDTH; ++i) {
-        for (int j = 0; j < LAB_HEIGHT; ++j) {
-            if (i == 0 || i == LAB_WIDTH - 1 || j == 0 || j == LAB_HEIGHT - 1)
-                _data[i][j] = FILL;
-            else
-                _data[i][j] = EMPTY;
+    printf("Setting obstacles, %d x %d\n", _height, _width);
+    /* every case is empty by default */
+    for (size_t i = 0; i < _width; i++) {
+        for (size_t j = 0; j < _height; j++) {
+            _data[i][j] = EMPTY;
+        }
+    }
+    /* walls are obstacles */
+    for (int i = 0; i < _nwall; i++) {
+        Wall w = _walls[i];
+        cout << w << endl;
+        for (int x = w._x1; x <= w._x2; x++) {
+            for (int y = w._y1; y <= w._y2; y++) {
+                _data[x][y] = FILL;
+            }
         }
     }
 
-    // les caisses
-    for (int i = 0; i < _nboxes; i++) {
-        _data[_boxes[i]._x][_boxes[i]._y] = FILL;
-    }
+    // autour des mur
+    // for (int i = 0; i < _wid; ++i) {
+    //     for (int j = 0; j < LAB_HEIGHT; ++j) {
+    //         if (i == 0 || i == LAB_WIDTH - 1 || j == 0 || j == LAB_HEIGHT -
+    //         1)
+    //             _data[i][j] = FILL;
+    //         else
+    //             _data[i][j] = EMPTY;
+    //     }
+    // }
 
-    // le trésor.
-    _data[_treasor._x][_treasor._y] = FILL;
+    // // les caisses
+    // for (int i = 0; i < _nboxes; i++) {
+    //     _data[_boxes[i]._x][_boxes[i]._y] = FILL;
+    // }
 
-    // les gardiens.
-    for (int i = 1; i < _nguards; i++) {
-        int x = (int)(_guards[i]->_x / scale);
-        int y = (int)(_guards[i]->_y / scale);
-        _data[x][y] = FILL;
-    }
+    // // le trésor.
+    // _data[_treasor._x][_treasor._y] = FILL;
+
+    // // les gardiens.
+    // for (int i = 1; i < _nguards; i++) {
+    //     int x = (int)(_guards[i]->_x / scale);
+    //     int y = (int)(_guards[i]->_y / scale);
+    //     _data[x][y] = FILL;
+    // }
 }
 
 template <typename T> T *arrayFromVector(vector<T> *v) {

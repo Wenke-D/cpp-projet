@@ -14,12 +14,15 @@ class MapData;
 
 class Labyrinthe : public Environnement {
   private:
-    char _data[LAB_WIDTH][LAB_HEIGHT];
+    /* width is length of char**, height is length of char* */
+    char** _data;
+    unsigned int _width;
+    unsigned int _height;
 
   public:
     Labyrinthe(char *);
-    int width() { return LAB_WIDTH; }   // retourne la largeur du labyrinthe.
-    int height() { return LAB_HEIGHT; } // retourne la longueur du labyrinthe.
+    int width() { return _width; }   // retourne la largeur du labyrinthe.
+    int height() { return _height; } // retourne la longueur du labyrinthe.
 
     /**
      * retourne la case (i, j).
