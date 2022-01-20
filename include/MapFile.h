@@ -1,3 +1,6 @@
+#ifndef M1_CPP_PROJECT_MAP_FILE
+#define M1_CPP_PROJECT_MAP_FILE
+
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -39,3 +42,5 @@ class MapFile {
 
     friend ostream &operator<<(ostream &os, const MapFile &mf);
 };
+
+#endif

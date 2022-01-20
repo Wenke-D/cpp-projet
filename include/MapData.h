@@ -4,14 +4,12 @@
 /**
  * Data structure of a map after parsing a map file
  */
-
-#include "Decoration.h"
-#include "Environnement.h"
+#include "MapElement.h"
 #include "MapFile.h"
-#include "Location.h"
-#include "Picture.h"
 
+#include <map>
 #include <vector>
+#include <iostream>
 
 #define LAB_WIDTH 80
 #define LAB_HEIGHT 25
@@ -29,13 +27,15 @@ class MapData {
     Location *hunter;
     Location *treasure;
 
-    MapFile* map_file;
+    MapFile *map_file;
 
     MapData(vector<Wall> *walls, vector<Decoration> *guards,
             vector<Location> *boxes, vector<Picture> *pictures,
-            vector<Decoration> *marks, Location *hunter, Location *treasure, MapFile* map_file)
+            vector<Decoration> *marks, Location *hunter, Location *treasure,
+            MapFile *map_file)
         : walls(walls), guards(guards), boxes(boxes), pictures(pictures),
-          marks(marks), hunter(hunter), treasure(treasure), map_file(map_file){};
+          marks(marks), hunter(hunter), treasure(treasure),
+          map_file(map_file){};
 
     /**
      * Make a mapData object from a map file.

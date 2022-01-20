@@ -2,11 +2,14 @@
 #define LABYRINTHE_H
 
 #include <algorithm>
+#include <iostream>
 
 
 #include "Environnement.h"
 #include "MapData.h"
 
+#include "Chasseur.h"
+#include "Gardien.h"
 
 
 class MapData;

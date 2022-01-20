@@ -1,24 +1,30 @@
 #include "MapData.h"
-#include "toString.h"
 
-
+const int PICTURE_OFFSET = 2;
 
 
 /**
- * Algorithm that findd walls in a array.
+ * Algorithm that searchs walls and pictures in a array.
  *
+ * @param data thr char array in which we looking for walls.
+ * @param length length of the array
  * @param wallRep the char represention of the wall, for example '|' or '-'
+ * @param rules picture replacement rules
+ * @param pictures the container where will append index of the pictures in the
+ * wall
  * @return a vector of location, the even index are locations of the beginning
  * of wall, odd index are respective locations of the end of wall.
  */
-vector<int> *wallsInArray(char *data, int length, char wallRep) {
+vector<int> *wallsAndPicturesInArray(char *data, int length, char wallRep,
+                                     map<char, string> &rules,
+                                     vector<int> &pictures) {
     bool withinWall = false;
     vector<int> *points = new vector<int>;
 
     for (int i = 0; i < length; i++) {
         char ch = data[i];
         // cout << "\tindex is " << i << endl;
-        ;
+
         // within a wall
         if (withinWall) {
             // cout << "\t\twe are within Wall" << endl;
@@ -38,6 +44,11 @@ vector<int> *wallsInArray(char *data, int length, char wallRep) {
                 points->push_back(i);
                 withinWall = false;
             }
+            // if letter is a picture symbol
+            auto iter = rules.find(ch);
+            if (iter != rules.end()) {
+                pictures.push_back(i);
+            }
         }
         // out of a wall
         else {
@@ -52,7 +63,7 @@ vector<int> *wallsInArray(char *data, int length, char wallRep) {
     }
 
     if (withinWall) {
-        // cout << "\t\tend of search within wall" << endl;
+        // cout << "\t\t end of search within wall" << endl;
         points->pop_back();
     }
 
@@ -66,7 +77,9 @@ vector<int> *wallsInArray(char *data, int length, char wallRep) {
  * @param width width of the grid, length of char**
  * @return a vector of all walls in tas
  */
-vector<Wall> *findHorizontalWalls(char **data, int height, int width) {
+vector<Wall> *findHorizontalWallsAndPictures(char **data, int height, int width,
+                                             map<char, string> &rules,
+                                             vector<Picture> &pictures) {
     vector<Wall> *walls = new vector<Wall>;
 
     int length = width;
@@ -77,18 +90,34 @@ vector<Wall> *findHorizontalWalls(char **data, int height, int width) {
         for (int j = 0; j < length; j++) {
             row[j] = data[j][y];
         }
-        cout << "Finding horizontal wall in line " << y << endl;
-        vector<int> points = *wallsInArray(row, length, HORIZONTAL_WALL);
+        cout << "Finding horizontal wall in line " << (int)y << endl;
+
+        vector<int> picture_points;
+        vector<int> points = *wallsAndPicturesInArray(
+            row, length, HORIZONTAL_WALL, rules, picture_points);
+
+        // walls
         for (size_t i = 0; i < points.size(); i += 2) {
             int begin_x = points[i];
             int end_x = points[i + 1];
             walls->push_back({begin_x, y, end_x, y, 0});
         }
+        // pictures
+        for (int index : picture_points) {
+            char sym = row[index];
+            int x1 = index, x2 = x1 + PICTURE_OFFSET;
+            int y1 = y, y2 = y;
+            string filename = rules[sym];
+            Picture p = {x1, y1, x2, y2, filename};
+            pictures.push_back(p);
+        }
     }
     return walls;
 }
 
-vector<Wall> *findVerticalWalls(char **data, int height, int width) {
+vector<Wall> *findVerticalWalls(char **data, int height, int width,
+                                map<char, string> &rules,
+                                vector<Picture> &pictures) {
     vector<Wall> *walls = new vector<Wall>;
 
     int length = height;
@@ -96,12 +125,24 @@ vector<Wall> *findVerticalWalls(char **data, int height, int width) {
     for (int x = 0; x < width; x++) {
         char *col = data[x];
         cout << "Finding vertical wall in col " << x << endl;
-        vector<int> points = *wallsInArray(col, length, VERTICAL_WALL);
+        vector<int> picture_points;
+        vector<int> points = *wallsAndPicturesInArray(
+            col, length, VERTICAL_WALL, rules, picture_points);
 
+        // constrcut walls
         for (size_t i = 0; i < points.size(); i += 2) {
             int begin_y = points[i];
             int end_y = points[i + 1];
             walls->push_back({x, begin_y, x, end_y, 0});
+        }
+        // construct pictures
+        for (int index : picture_points) {
+            char sym = col[index];
+            int x1 = x, x2 = x;
+            int y1 = index, y2 = index + PICTURE_OFFSET;
+            string filename = rules[sym];
+            Picture p = {x1, y1, x2, y2, filename};
+            pictures.push_back(p);
         }
     }
     return walls;
@@ -114,13 +155,16 @@ template <typename T> void concatVectors(vector<T> *v1, vector<T> *v2) {
     v1->insert(v1->end(), v2->begin(), v2->end());
 }
 
-vector<Wall> *findWalls(char **data, int height, int width) {
+vector<Wall> *findWallsAndPictures(char **data, int height, int width,
+                                   map<char, string> &rules,
+                                   vector<Picture> &pictures) {
     cout << "begin finding wall in width: " << width << " height: " << height
          << endl;
     vector<Wall> *all = new vector<Wall>;
 
-    auto v1 = findVerticalWalls(data, height, width);
-    auto v2 = findHorizontalWalls(data, height, width);
+    auto v1 = findVerticalWalls(data, height, width, rules, pictures);
+    auto v2 =
+        findHorizontalWallsAndPictures(data, height, width, rules, pictures);
 
     concatVectors(all, v1);
     concatVectors(all, v2);
@@ -130,13 +174,18 @@ vector<Wall> *findWalls(char **data, int height, int width) {
 MapData *MapData::init(string filename) {
     MapFile *map_file = MapFile::init(filename);
 
-    vector<Wall> *walls =
-        findWalls(map_file->data, map_file->height, map_file->width);
-
-    cout << "All the walls: " << endl;
-    cout << *walls << endl;
-
     vector<Picture> *pictures = new vector<Picture>;
+
+    vector<Wall> *walls =
+        findWallsAndPictures(map_file->data, map_file->height, map_file->width,
+                             *(map_file->picture), *pictures);
+
+    cout << "all pictures" << endl;
+    for (auto &p : *pictures) {
+        cout << p << endl;
+    }
+
+    // vector<Picture> *pictures = new vector<Picture>;
     // pictures->push_back({4, 0, 6, 0, "p1.gif"});
     // pictures->push_back({8, 0, 10, 0, "voiture.jpg"});
 

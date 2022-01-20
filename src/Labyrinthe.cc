@@ -1,16 +1,8 @@
 #include "Labyrinthe.h"
-#include "Chasseur.h"
-#include "Gardien.h"
-#include "toString.h"
-
-#include <iostream>
 
 template <typename T> T *arrayFromVector(vector<T> *v);
 
 const int PICTURE_OFFSET = 2;
-
-
-
 
 Sound *Chasseur::_hunter_fire; // bruit de l'arme du chasseur.
 Sound *Chasseur::_hunter_hit;  // cri du chasseur touché.
@@ -132,7 +124,6 @@ void Labyrinthe::setObstacles() {
     /* walls are obstacles */
     for (int i = 0; i < _nwall; i++) {
         Wall w = _walls[i];
-        cout << w << endl;
         for (int x = w._x1; x <= w._x2; x++) {
             for (int y = w._y1; y <= w._y2; y++) {
                 _data[x][y] = FILL;

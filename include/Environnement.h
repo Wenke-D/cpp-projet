@@ -1,20 +1,7 @@
 #ifndef ENVIRONNEMENT_H
 #define ENVIRONNEMENT_H
 
-/*
- *	Traduit un fichier de type définition de labyrinthe au format interne.
- */
-
-enum Case {
-    /**
-     * case vide (où on peut marcher!)
-     */
-    EMPTY = 0,
-    /**
-     * case remplit (où on ne peut pas marcher)
-     */
-    FILL = 1
-};
+#include "MapElement.h"
 
 // affiche un message en haut à gauche de l'écran.
 extern void message(const char *format, ...);
@@ -23,17 +10,6 @@ extern void message(const char *format, ...);
 extern void partie_terminee(bool winned);
 
 class Mover;
-
-struct Wall {
-    int _x1, _y1; // point de depart.
-    int _x2, _y2; // point d'arrivée.
-    int _ntex;    // numéro de texture.
-};
-
-struct Box {
-    int _x, _y; // emplacement.
-    int _ntex;  // numéro de texture.
-};
 
 class Environnement {
   public:
