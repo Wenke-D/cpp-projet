@@ -12,6 +12,16 @@ Environnement *Environnement::init(char *filename) {
     return new Labyrinthe(filename);
 }
 
+
+int scale_up(int v){
+    return v * Environnement::scale;
+}
+
+int normalize(int v){
+    return (int)(v / Environnement::scale);
+}
+
+
 Labyrinthe::Labyrinthe(char *filename) {
     // configurations of res path
     modele_dir = MODELE_DIR.c_str();
@@ -100,7 +110,7 @@ void Labyrinthe::renderGuards(MapData *map) {
     _nguards = map->guards->size() + 1;
 
     _guards = new Mover *[_nguards];
-    _guards[0] = new Chasseur(this);
+    _guards[0] = new Chasseur(this, map->hunter->x, map->hunter->y);
 
     vector<Decoration> data = *(map->guards);
     for (int i = 0; i < _nguards - 1; i++) {
@@ -108,8 +118,8 @@ void Labyrinthe::renderGuards(MapData *map) {
         char *tmp = new char[128];
         strcpy(tmp, src.texture.c_str());
         _guards[i + 1] = new Gardien(this, tmp);
-        _guards[i + 1]->_x = src.l.x;
-        _guards[i + 1]->_y = src.l.y;
+        _guards[i + 1]->_x = scale_up(src.l.x);
+        _guards[i + 1]->_y = scale_up(src.l.y);
     }
 }
 

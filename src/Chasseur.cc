@@ -4,10 +4,9 @@ const string HUNTER_FIRE_SOUND_PATH = get_sound_path("hunter_fire.wav");
 const string HUNTER_HIT_SOUND_PATH = get_sound_path("hunter_hit.wav");
 const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
 
-/*
- *	Tente un deplacement.
+/**
+ * Tente un deplacement.
  */
-
 bool Chasseur::move_aux(double dx, double dy) {
     if (EMPTY == _l->data((int)((_x + dx) / Environnement::scale),
                           (int)((_y + dy) / Environnement::scale))) {
@@ -18,22 +17,17 @@ bool Chasseur::move_aux(double dx, double dy) {
     return false;
 }
 
-/*
- *	Constructeur.
+/**
+ * Constructeur.
  */
-
-Chasseur::Chasseur(Labyrinthe *l) : Mover(100, 80, l, 0) {
+Chasseur::Chasseur(Labyrinthe *l, int x, int y)
+    : Mover(x * Environnement::scale, y * Environnement::scale, l, 0) {
     // initialise les sons.
     _hunter_fire = new Sound(HUNTER_FIRE_SOUND_PATH.c_str());
     _hunter_hit = new Sound(HUNTER_HIT_SOUND_PATH.c_str());
     if (_wall_hit == 0)
         _wall_hit = new Sound(HIT_WALL_SOUND_PATH.c_str());
 }
-
-/*
- *	Fait bouger la boule de feu (ceci est une exemple, à vous de traiter les
- *collisions spécifiques...)
- */
 
 bool Chasseur::process_fireball(float dx, float dy) {
     // calculer la distance entre le chasseur et le lieu de l'explosion.
@@ -53,7 +47,7 @@ bool Chasseur::process_fireball(float dx, float dy) {
 
     float dmax2 =
         (_l->width()) * (_l->width()) + (_l->height()) * (_l->height());
-	
+
     // faire exploser la boule de feu avec un bruit fonction de la distance.
     _wall_hit->play(1. - dist2 / dmax2);
     message("Booom...");
@@ -81,7 +75,12 @@ void Chasseur::fire(int angle_vertical) {
 
 void Chasseur::right_click(bool shift, bool control) {
     if (shift)
-        _l->_guards[1]->rester_au_sol();
+        for (size_t i = 1; i < _l->_nguards; i++) {
+            _l->_guards[i]->rester_au_sol();
+        }
+
     else
-        _l->_guards[1]->tomber();
+        for (size_t i = 1; i < _l->_nguards; i++) {
+            _l->_guards[i]->tomber();
+        }
 }

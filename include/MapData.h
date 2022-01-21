@@ -42,7 +42,7 @@ class MapData {
      * @param filename the full valid path of the map file
      * @return a mapData object
      */
-    static MapData *init(string filename);
+    static MapData* init(string filename);
 
     ~MapData() {
         delete walls;

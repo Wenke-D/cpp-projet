@@ -13,9 +13,9 @@ using namespace std;
 const char CORNER = '+';
 const char HORIZONTAL_WALL = '-';
 const char VERTICAL_WALL = '|';
-const char HUNTER = 'c';
-const char GUARD = 'g';
-const char TREASURE = 't';
+const char HUNTER = 'C';
+const char GUARD = 'G';
+const char TREASURE = 'T';
 const char BOX = 'x';
 const char EMPTY_CASE = ' ';
 

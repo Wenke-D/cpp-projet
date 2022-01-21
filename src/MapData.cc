@@ -2,7 +2,6 @@
 
 const int PICTURE_OFFSET = 2;
 
-
 /**
  * Algorithm that searchs walls and pictures in a array.
  *
@@ -198,14 +197,25 @@ MapData *MapData::init(string filename) {
     marks->push_back({50, 14, "p2.gif"});
     marks->push_back({20, 15, "p3.gif"});
 
-    Location *hunter = new Location{10, 20};
+    Location *hunter = new Location{2, 2};
     Location *treasure = new Location{1, 10};
-
     vector<Decoration> *guards = new vector<Decoration>;
-    guards->push_back({200, 50, "Lezard"});
-    guards->push_back({90, 70, "Blade"});
-    guards->push_back({60, 10, "Serpent"});
-    guards->push_back({130, 100, "Samourai"});
+    for (size_t i = 0; i < map_file->width; i++) {
+        for (size_t j = 0; j < map_file->height; j++) {
+            char ch = map_file->data[i][j];
+            if (ch == GUARD) {
+                guards->push_back({(int)i, (int)j, "Lezard"});
+            }
+            if (ch == HUNTER) {
+                hunter = new Location{(int)i, (int)j};
+            }
+        }
+    }
+
+    // guards->push_back({200, 50, "Lezard"});
+    // guards->push_back({90, 70, "Blade"});
+    // guards->push_back({60, 10, "Serpent"});
+    // guards->push_back({130, 100, "Samourai"});
 
     return new MapData(walls, guards, boxes, pictures, marks, hunter, treasure,
                        map_file);
