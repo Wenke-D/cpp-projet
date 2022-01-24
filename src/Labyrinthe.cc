@@ -12,15 +12,17 @@ Environnement *Environnement::init(char *filename) {
     return new Labyrinthe(filename);
 }
 
+/**
+ * Scale grid value up to rendring pixel
+ * @param v the value to be scaled up
+ */
+inline int scale_up(int v) { return v * Environnement::scale; }
 
-int scale_up(int v){
-    return v * Environnement::scale;
-}
-
-int normalize(int v){
-    return (int)(v / Environnement::scale);
-}
-
+/**
+ * Normalize value from rendring pixel to grid value
+ * @param v the value to be normalized
+ */
+inline int normalize(int v) { return (int)(v / Environnement::scale); }
 
 Labyrinthe::Labyrinthe(char *filename) {
     // configurations of res path
@@ -102,7 +104,7 @@ void Labyrinthe::renderMarks(MapData *map) {
 
 void Labyrinthe::renderTreasure(MapData *map) {
     _treasor._x = map->treasure->x;
-    _treasor._y = map->treasure->x;
+    _treasor._y = map->treasure->y;
 }
 
 void Labyrinthe::renderGuards(MapData *map) {
@@ -141,24 +143,13 @@ void Labyrinthe::setObstacles() {
         }
     }
 
-    // autour des mur
-    // for (int i = 0; i < _wid; ++i) {
-    //     for (int j = 0; j < LAB_HEIGHT; ++j) {
-    //         if (i == 0 || i == LAB_WIDTH - 1 || j == 0 || j == LAB_HEIGHT -
-    //         1)
-    //             _data[i][j] = FILL;
-    //         else
-    //             _data[i][j] = EMPTY;
-    //     }
-    // }
+    // les caisses
+    for (int i = 0; i < _nboxes; i++) {
+        _data[_boxes[i]._x][_boxes[i]._y] = FILL;
+    }
 
-    // // les caisses
-    // for (int i = 0; i < _nboxes; i++) {
-    //     _data[_boxes[i]._x][_boxes[i]._y] = FILL;
-    // }
-
-    // // le trésor.
-    // _data[_treasor._x][_treasor._y] = FILL;
+    // le trésor.
+    _data[_treasor._x][_treasor._y] = FILL;
 
     // // les gardiens.
     // for (int i = 1; i < _nguards; i++) {

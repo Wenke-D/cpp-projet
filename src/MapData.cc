@@ -188,17 +188,14 @@ MapData *MapData::init(string filename) {
     // pictures->push_back({4, 0, 6, 0, "p1.gif"});
     // pictures->push_back({8, 0, 10, 0, "voiture.jpg"});
 
-    vector<Location> *boxes = new vector<Location>();
-    boxes->push_back({70, 12});
-    boxes->push_back({10, 5});
-    boxes->push_back({65, 22});
 
     vector<Decoration> *marks = new vector<Decoration>;
     marks->push_back({50, 14, "p2.gif"});
     marks->push_back({20, 15, "p3.gif"});
 
-    Location *hunter = new Location{2, 2};
-    Location *treasure = new Location{1, 10};
+    Location* hunter;
+    Location* treasure;
+    vector<Location> *boxes = new vector<Location>();
     vector<Decoration> *guards = new vector<Decoration>;
     for (size_t i = 0; i < map_file->width; i++) {
         for (size_t j = 0; j < map_file->height; j++) {
@@ -208,6 +205,12 @@ MapData *MapData::init(string filename) {
             }
             if (ch == HUNTER) {
                 hunter = new Location{(int)i, (int)j};
+            }
+            if(ch == BOX){
+                boxes->push_back({(int)i, (int)j});
+            }
+            if(ch == TREASURE){
+                treasure = new Location{(int)i, (int)j};
             }
         }
     }
