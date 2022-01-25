@@ -6,6 +6,9 @@ class Labyrinthe; // la (future) vôtre
 #include "Environnement.h"
 #include "FireBall.h"
 
+const float SPEED = 0.2;
+
+
 class Mover {
   private:
     // initialise le modêle md2.
@@ -29,19 +32,39 @@ class Mover {
         _model = init(modele);
     }
     virtual ~Mover() {}
-    void tomber(); // fait tomber un personnage (gardien) et se relever
-    void
-    rester_au_sol(); // fait tomber un personnage (gardien) et le laisse au sol.
-    virtual void update(void) = 0; // fait 'penser' le personnage (gardien).
-    // fait bouger la boule de feu du personnage.
+    /**
+     * Fait tomber un personnage (gardien) et se relever
+     */
+    void tomber();
+    /**
+     * Fait tomber un personnage (gardien) et le laisse au sol.
+     */
+    void rester_au_sol();
+    /**
+     * Fait 'penser' le personnage (gardien).
+     */
+    virtual void update(void) = 0;
+
+    /**
+     * Fait bouger la boule de feu du personnage.
+     */
     virtual bool process_fireball(float dx, float dy) = 0;
-    // tente de déplacer le personnage de <dx,dy>.
+
+    /** 
+     * Tente de déplacer le personnage de <dx,dy>.
+     */
     virtual bool move(double dx, double dy) = 0;
-    // fait tirer le personnage sur un ennemi (vous pouvez ignorer l'angle
-    // vertical).
+    
+    /**
+     * fait tirer le personnage sur un ennemi (vous pouvez ignorer l'angle
+     * vertical).
+     */
     virtual void fire(int angle_vertical) = 0;
-    // appelée pour le gardien 0 (chasseur) quand l'utilisateur fait un clic
-    // droit; shift (control) est vrai si la touche shift (control) est appuy�e.
+
+    /**
+     * Appelée pour le gardien 0 (chasseur) quand l'utilisateur fait un clic
+     * droit; shift (control) est vrai si la touche shift (control) est appuyée. 
+     */
     virtual void right_click(bool shift, bool control) {}
 };
 

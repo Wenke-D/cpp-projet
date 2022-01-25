@@ -34,7 +34,7 @@ Labyrinthe::Labyrinthe(char *filename) {
     _data = map->map_file->data;
     _width = map->map_file->width;
     _height = map->map_file->height;
-
+    cout << "Map width: " << _width << " height: " << _height << endl;
     renderWall(map);
     renderPictures(map);
     renderBoxes(map);
@@ -119,14 +119,12 @@ void Labyrinthe::renderGuards(MapData *map) {
         auto src = data[i];
         char *tmp = new char[128];
         strcpy(tmp, src.texture.c_str());
-        _guards[i + 1] = new Gardien(this, tmp);
-        _guards[i + 1]->_x = scale_up(src.l.x);
-        _guards[i + 1]->_y = scale_up(src.l.y);
+        _guards[i + 1] =
+            new Gardien(this, tmp, scale_up(src.l.x), scale_up(src.l.y));
     }
 }
 
 void Labyrinthe::setObstacles() {
-    printf("Setting obstacles, %d x %d\n", _height, _width);
     /* every case is empty by default */
     for (size_t i = 0; i < _width; i++) {
         for (size_t j = 0; j < _height; j++) {

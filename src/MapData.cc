@@ -22,24 +22,19 @@ vector<int> *wallsAndPicturesInArray(char *data, int length, char wallRep,
 
     for (int i = 0; i < length; i++) {
         char ch = data[i];
-        // cout << "\tindex is " << i << endl;
 
         // within a wall
         if (withinWall) {
-            // cout << "\t\twe are within Wall" << endl;
             // symbol to determine
             if (ch == CORNER) {
                 /* Conditions to ignore this '+',
                  * that is, this '+' is not the end of the array
                  * and it's followed by some valid wall componants.
                  */
-                // cout << "\t\tmeet a cornor" << endl;
                 if (i != length - 1 &&
                     (data[i + 1] == wallRep || data[i + 1] == CORNER)) {
-                    // cout << "\t\tignore this cornor" << endl;
                     continue;
                 }
-                // cout << "\t\tthis corner is a end point" << endl;
                 points->push_back(i);
                 withinWall = false;
             }
@@ -51,10 +46,8 @@ vector<int> *wallsAndPicturesInArray(char *data, int length, char wallRep,
         }
         // out of a wall
         else {
-            // cout << "\t\twe are in outside of wall" << endl;
             // begin of a wall
             if (ch == CORNER && (i == 0 || data[i - 1] != wallRep)) {
-                // cout << "\t\tthis is a begin point" << endl;
                 withinWall = true;
                 points->push_back(i);
             }
@@ -62,7 +55,6 @@ vector<int> *wallsAndPicturesInArray(char *data, int length, char wallRep,
     }
 
     if (withinWall) {
-        // cout << "\t\t end of search within wall" << endl;
         points->pop_back();
     }
 
@@ -89,7 +81,6 @@ vector<Wall> *findHorizontalWallsAndPictures(char **data, int height, int width,
         for (int j = 0; j < length; j++) {
             row[j] = data[j][y];
         }
-        cout << "Finding horizontal wall in line " << (int)y << endl;
 
         vector<int> picture_points;
         vector<int> points = *wallsAndPicturesInArray(
@@ -123,7 +114,6 @@ vector<Wall> *findVerticalWalls(char **data, int height, int width,
 
     for (int x = 0; x < width; x++) {
         char *col = data[x];
-        cout << "Finding vertical wall in col " << x << endl;
         vector<int> picture_points;
         vector<int> points = *wallsAndPicturesInArray(
             col, length, VERTICAL_WALL, rules, picture_points);
@@ -157,8 +147,6 @@ template <typename T> void concatVectors(vector<T> *v1, vector<T> *v2) {
 vector<Wall> *findWallsAndPictures(char **data, int height, int width,
                                    map<char, string> &rules,
                                    vector<Picture> &pictures) {
-    cout << "begin finding wall in width: " << width << " height: " << height
-         << endl;
     vector<Wall> *all = new vector<Wall>;
 
     auto v1 = findVerticalWalls(data, height, width, rules, pictures);
@@ -178,16 +166,6 @@ MapData *MapData::init(string filename) {
     vector<Wall> *walls =
         findWallsAndPictures(map_file->data, map_file->height, map_file->width,
                              *(map_file->picture), *pictures);
-
-    cout << "all pictures" << endl;
-    for (auto &p : *pictures) {
-        cout << p << endl;
-    }
-
-    // vector<Picture> *pictures = new vector<Picture>;
-    // pictures->push_back({4, 0, 6, 0, "p1.gif"});
-    // pictures->push_back({8, 0, 10, 0, "voiture.jpg"});
-
 
     vector<Decoration> *marks = new vector<Decoration>;
     marks->push_back({50, 14, "p2.gif"});

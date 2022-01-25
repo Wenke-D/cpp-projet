@@ -20,8 +20,8 @@ L'excutable est produit à l'aide du `makefile`. Il est compatible dans Linux et
 - **include**: Tous les fichiers `.h`
 - **lib**: Libraires externales, les `.o` précompilés.
 - **res**: Toutes les ressources externes, comme images, sons.
-- **src**: Codes source, on n'accepte que `.cc`
-- **test**: Codes de test
+- **src**: Code source, on n'accepte que `.cc`
+- **test**: Code de test
 
 
 

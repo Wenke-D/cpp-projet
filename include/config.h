@@ -13,6 +13,8 @@ extern const string TEXTURE_DIR;
 
 extern const string MODELE_DIR;
 
+extern const int HEALTH = 100;
+
 /**
  * Return the full path of a sound file.
  * @param name filename of the sound with extension

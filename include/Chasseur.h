@@ -10,7 +10,12 @@ class Labyrinthe;
 
 class Chasseur : public Mover {
   private:
-    // accepte ou non un deplacement.
+    /**
+     * Try to move a certain distance.
+     * @param dx distance in x direction
+     * @param dy distance in y direction
+     * @return true if it can move, false otherwise.
+     */
     bool move_aux(double dx, double dy);
 
   public:
@@ -27,11 +32,16 @@ class Chasseur : public Mover {
 	 */
     Chasseur(Labyrinthe *l, int x, int y);
 	
-    // ne bouger que dans une case vide (on 'glisse' le long des obstacles)
+    /**
+     * Ne bouger que dans une case vide (on 'glisse' le long des obstacles)
+     */
     bool move(double dx, double dy) {
         return move_aux(dx, dy) || move_aux(dx, 0.0) || move_aux(0.0, dy);
     }
-    // le chasseur ne pense pas!
+
+    /**
+     * le chasseur ne pense pas!
+     */
     void update(void){};
 
     /**
@@ -41,6 +51,7 @@ class Chasseur : public Mover {
      * @return Return true if it can move, false otherwise
      */
     bool process_fireball(float dx, float dy);
+
     // tire sur un ennemi.
     void fire(int angle_vertical);
     // clic droit.

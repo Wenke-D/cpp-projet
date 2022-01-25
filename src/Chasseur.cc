@@ -4,12 +4,11 @@ const string HUNTER_FIRE_SOUND_PATH = get_sound_path("hunter_fire.wav");
 const string HUNTER_HIT_SOUND_PATH = get_sound_path("hunter_hit.wav");
 const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
 
-/**
- * Tente un deplacement.
- */
 bool Chasseur::move_aux(double dx, double dy) {
-    if (EMPTY == _l->data((int)((_x + dx) / Environnement::scale),
-                          (int)((_y + dy) / Environnement::scale))) {
+
+    int v = _l->data((int)((_x + dx) / Environnement::scale),
+                     (int)((_y + dy) / Environnement::scale));
+    if (EMPTY == v) {
         _x += dx;
         _y += dy;
         return true;

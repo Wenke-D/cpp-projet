@@ -66,9 +66,9 @@ SRC_EXT = cc
 # ======================== Need Manual Update =======================
 FIXED_HEADERS = Environnement.h Mover.h FireBall.h Sound.h
 
-OBJS = Chasseur Labyrinthe config MapData MapElement MapFile
+OBJS = Chasseur Labyrinthe config MapData MapElement MapFile Gardien Mind
 
-SINGLE_HEADERS = Gardien.h
+SINGLE_HEADERS = 
 
 # source filenames
 SOURCES = $(addsuffix .cc,$(OBJS))
