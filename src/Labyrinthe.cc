@@ -111,8 +111,12 @@ void Labyrinthe::renderGuards(MapData *map) {
     // le chasseur et les 4 gardiens.
     _nguards = map->guards->size() + 1;
 
+    Bridge* bridge = new Bridge(Environnement::scale);
+
     _guards = new Mover *[_nguards];
-    _guards[0] = new Chasseur(this, map->hunter->x, map->hunter->y);
+    Chasseur* hunter = new Chasseur(this,bridge, map->hunter->x, map->hunter->y);
+    _guards[0] = hunter;
+    bridge->updateHunterLocation(hunter->_x, hunter->_y);
 
     vector<Decoration> data = *(map->guards);
     for (int i = 0; i < _nguards - 1; i++) {
@@ -120,7 +124,7 @@ void Labyrinthe::renderGuards(MapData *map) {
         char *tmp = new char[128];
         strcpy(tmp, src.texture.c_str());
         _guards[i + 1] =
-            new Gardien(this, tmp, scale_up(src.l.x), scale_up(src.l.y));
+            new Gardien(this,bridge, tmp, scale_up(src.l.x), scale_up(src.l.y));
     }
 }
 

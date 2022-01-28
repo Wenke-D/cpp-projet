@@ -179,7 +179,7 @@ MapData *MapData::init(string filename) {
         for (size_t j = 0; j < map_file->height; j++) {
             char ch = map_file->data[i][j];
             if (ch == GUARD) {
-                guards->push_back({(int)i, (int)j, "Lezard"});
+                guards->push_back({(int)i, (int)j, "Serpent"});
             }
             if (ch == HUNTER) {
                 hunter = new Location{(int)i, (int)j};

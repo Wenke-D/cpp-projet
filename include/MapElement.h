@@ -36,10 +36,11 @@ class Location {
     int x, y;
     Location(int x, int y);
     ~Location(){};
+    Location operator+(const Location& other) const;
+    Location operator-(const Location& other) const;
 };
 
 std::ostream &operator<<(std::ostream &out, const Location &p);
-
 
 class Picture {
   private:

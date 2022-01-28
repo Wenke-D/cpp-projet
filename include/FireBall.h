@@ -32,7 +32,14 @@ public:
 	FireBall (float size, unsigned int tex, Mover*);
 	void display ();
 	void move_step ();
-	// initialise un tir.
+	
+	/** Initialise un tir.
+	 * @param x x position initiale de la boule
+	 * @param y y position initiale de la boule
+	 * @param z z position initiale de la boule
+	 * @param angle_vertical angles de visée
+	 * @param angle_horizontal
+	 */
 	void init (float x, float y, float z, int angle_vertical, int angle_horizontal);
 	// décide de la taille initiale de la boule.
 	void set_orig_size (float size) { _orig_size = size; }
