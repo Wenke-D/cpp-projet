@@ -1,11 +1,9 @@
 #include "Gardien.h"
 
 /**
- * Return the angle in degree between points.
+ * return atan(b/a) in degree rep
  */
-int angle_of_points(float x1, float y1, float x2, float y2) {
-    return atan((x2 - x1) / (y2 - y1)) * 180 / M_PI;
-}
+int angle_of_points(float b, float a) { return atan(b / a) * 180 / M_PI; }
 
 bool Gardien::try_move(int unit_x, int unit_y) {
     int x = (int)(this->_x / Environnement::scale) + unit_x;
@@ -42,9 +40,6 @@ void Gardien::update() {
         }
     }
     /* Behaviors no matter in what state */
-    int hunter_angle =
-        angle_of_points(_x, _y, bridge->get_hunter_x(), bridge->get_hunter_y());
-    // cout << "Hunter at angle: " << hunter_angle << endl;
     // looking for hunter to update state
     bool rightDirection = look_for_hunter();
     bool noObstacle = have_no_obstacle();
@@ -131,6 +126,18 @@ void Gardien::fire(int angle_vertical) {
         fire_angle = 90;
     else if (fire_angle == 90)
         fire_angle = 270;
-    printf("Init a ball horizontal angle: %d\n", fire_angle);
-    _fb->init(_x, _y, 10., 360, fire_angle);
+
+    int diff = 0, final_angle = 0;
+    if (fire_angle == 270 || fire_angle == 90) {
+        diff = angle_of_points(bridge->get_hunter_y() - _y,
+                               bridge->get_hunter_x() - _x);
+        final_angle = fire_angle - diff;
+    } else {
+        diff = angle_of_points(bridge->get_hunter_x() - _x,
+                               bridge->get_hunter_y() - _y);
+        final_angle = fire_angle + diff;
+    }
+
+    printf("face angle: %d, diff: %d\n", fire_angle, diff);
+    _fb->init(_x, _y, 10., 360, final_angle);
 }

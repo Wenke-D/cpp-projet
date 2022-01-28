@@ -30,10 +30,10 @@ char** map_lines_to_grid(const vector<string> &lines, unsigned int width) {
     char **grid = make_grid<char>(width, height);
 
     // copy map data to a 2d array
-    // for each line
+    // for each line of the vector
     for (size_t i = 0; i < height; i++) {
         string src = lines[i];
-        // for each char
+        // for each char of the line
         for (size_t j = 0; j < width; j++) {
             if (j < src.size()) {
                 grid[j][i] = src[j];

@@ -171,8 +171,8 @@ MapData *MapData::init(string filename) {
     marks->push_back({50, 14, "p2.gif"});
     marks->push_back({20, 15, "p3.gif"});
 
-    Location* hunter;
-    Location* treasure;
+    Location* hunter = nullptr;
+    Location* treasure = nullptr;
     vector<Location> *boxes = new vector<Location>();
     vector<Decoration> *guards = new vector<Decoration>;
     for (size_t i = 0; i < map_file->width; i++) {
@@ -191,6 +191,15 @@ MapData *MapData::init(string filename) {
                 treasure = new Location{(int)i, (int)j};
             }
         }
+    }
+    if(treasure == nullptr){
+        cerr << "Missing treasure location in the map file, exit" << endl;
+        exit(3);
+    }
+
+    if(hunter == nullptr){
+        cerr << "Missing hunter location in the map file, exit" << endl;
+        exit(4);
     }
 
     // guards->push_back({200, 50, "Lezard"});

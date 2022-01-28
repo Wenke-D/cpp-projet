@@ -20,7 +20,7 @@ struct Mind {
      *
      * @param dx a return value in parameter
      * @param dy a return value in parameter
-     * @return face angle for this instruction.
+     * @return face angle for this instruction.  
      */
     int think(int *dx, int *dy);
 
