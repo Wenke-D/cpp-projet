@@ -4,9 +4,9 @@ template <typename T> T *arrayFromVector(vector<T> *v);
 
 const int PICTURE_OFFSET = 2;
 
-Sound *Chasseur::_hunter_fire; // bruit de l'arme du chasseur.
-Sound *Chasseur::_hunter_hit;  // cri du chasseur touché.
-Sound *Chasseur::_wall_hit;    // on a tapé un mur.
+Sound *Shooter::_hunter_fire; // bruit de l'arme du chasseur.
+Sound *Shooter::_hunter_hit;  // cri du chasseur touché.
+Sound *Shooter::_wall_hit;    // on a tapé un mur.
 
 Environnement *Environnement::init(char *filename) {
     return new Labyrinthe(filename);

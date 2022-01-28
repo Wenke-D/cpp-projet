@@ -141,3 +141,11 @@ void Gardien::fire(int angle_vertical) {
     printf("face angle: %d, diff: %d\n", fire_angle, diff);
     _fb->init(_x, _y, 10., 360, final_angle);
 }
+
+void Gardien::when_ball_moving() {
+    bool isHit = bridge->hunterIsHit(_fb->get_x(), _fb->get_y());
+    if (isHit) {
+        cout << "Hunter is hit: " << isHit << endl;
+        bridge->hitHunter();
+    }
+}

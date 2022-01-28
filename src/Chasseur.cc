@@ -1,8 +1,5 @@
 #include "Chasseur.h"
 
-const string HUNTER_FIRE_SOUND_PATH = get_sound_path("hunter_fire.wav");
-const string HUNTER_HIT_SOUND_PATH = get_sound_path("hunter_hit.wav");
-const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
 
 bool Chasseur::move_aux(double dx, double dy) {
 
@@ -25,11 +22,6 @@ void Chasseur::updateMyPlace() {}
 Chasseur::Chasseur(Labyrinthe *l, Bridge *bridge, int x, int y)
     : Shooter(x * Environnement::scale, y * Environnement::scale, l, 0,
               bridge) {
-    // initialise les sons.
-    _hunter_fire = new Sound(HUNTER_FIRE_SOUND_PATH.c_str());
-    _hunter_hit = new Sound(HUNTER_HIT_SOUND_PATH.c_str());
-    if (_wall_hit == 0)
-        _wall_hit = new Sound(HIT_WALL_SOUND_PATH.c_str());
 }
 
 /**

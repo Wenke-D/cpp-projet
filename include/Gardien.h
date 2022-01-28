@@ -53,6 +53,8 @@ class Gardien : public Shooter {
     void after_explonation();
 
     void fire(int angle_vertical) override;
+
+    void when_ball_moving() override;
 };
 
 #endif

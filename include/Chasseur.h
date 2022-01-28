@@ -5,8 +5,6 @@
 
 #include "Bridge.h"
 #include "Shooter.h"
-#include "Sound.h"
-#include "config.h"
 
 class Labyrinthe;
 
@@ -25,10 +23,6 @@ class Chasseur : public Shooter {
     void updateMyPlace();
 
   public:
-    // les sons.
-    static Sound *_hunter_fire; // bruit de l'arme du chasseur.
-    static Sound *_hunter_hit;  // cri du chasseur touché.
-    static Sound *_wall_hit;    // on a tapé un mur.
 
     /**
      * Constructor

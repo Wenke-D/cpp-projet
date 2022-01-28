@@ -5,32 +5,22 @@
  */
 bool Shooter::process_fireball(float dx, float dy) {
     // calculer la distance entre le chasseur et le lieu de l'explosion.
-    float x = (_x - _fb->get_x()) / Environnement::scale;
-    float y = (_y - _fb->get_y()) / Environnement::scale;
+    float x = (bridge->get_hunter_x() - _fb->get_x()) / Environnement::scale;
+    float y = (bridge->get_hunter_y() - _fb->get_y()) / Environnement::scale;
     float dist2 = x * x + y * y;
 
-    bool isHit = bridge->hunterIsHit(_fb->get_x(), _fb->get_y());
-    if (isHit){
-        cout << "Hunter is hit: " << isHit << endl;
-        bridge ->hitHunter();
-    }
+    this->when_ball_moving();
 
     // on bouge que dans le vide!
     if (EMPTY == _l->data((int)((_fb->get_x() + dx) / Environnement::scale),
                           (int)((_fb->get_y() + dy) / Environnement::scale))) {
-        // message("Woooshh ..... %d", (int)dist2);
-        // il y a la place.
         return true;
     }
-    // collision...
+    // faire exploser la boule de feu avec un bruit en fonction de la distance.
     // calculer la distance maximum en ligne droite.
-
-    // float dmax2 =
-    //     (_l->width()) * (_l->width()) + (_l->height()) * (_l->height());
-
-    // faire exploser la boule de feu avec un bruit fonction de la distance.
-    // _wall_hit->play(1. - dist2 / dmax2);
-    // message("Booom...");
+    float dmax2 =
+        (_l->width()) * (_l->width()) + (_l->height()) * (_l->height());
+    _wall_hit->play(1. - dist2 / dmax2);
     after_explonation();
     return false;
 }
