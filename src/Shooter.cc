@@ -9,10 +9,16 @@ bool Shooter::process_fireball(float dx, float dy) {
     float y = (_y - _fb->get_y()) / Environnement::scale;
     float dist2 = x * x + y * y;
 
+    bool isHit = bridge->hunterIsHit(_fb->get_x(), _fb->get_y());
+    if (isHit){
+        cout << "Hunter is hit: " << isHit << endl;
+        bridge ->hitHunter();
+    }
+
     // on bouge que dans le vide!
     if (EMPTY == _l->data((int)((_fb->get_x() + dx) / Environnement::scale),
                           (int)((_fb->get_y() + dy) / Environnement::scale))) {
-        message("Woooshh ..... %d", (int)dist2);
+        // message("Woooshh ..... %d", (int)dist2);
         // il y a la place.
         return true;
     }
@@ -24,7 +30,7 @@ bool Shooter::process_fireball(float dx, float dy) {
 
     // faire exploser la boule de feu avec un bruit fonction de la distance.
     // _wall_hit->play(1. - dist2 / dmax2);
-    message("Booom...");
+    // message("Booom...");
     after_explonation();
     return false;
 }
@@ -36,6 +42,7 @@ bool Shooter::process_fireball(float dx, float dy) {
 void Shooter::fire(int angle_vertical) {
     message("Woooshh...");
     // _hunter_fire->play();
-    printf("Init a ball vertical angle: %d, horizontal angle: %d\n", angle_vertical, _angle);
+    printf("Init a ball vertical angle: %d, horizontal angle: %d\n",
+           angle_vertical, _angle);
     _fb->init(_x, _y, 10., angle_vertical, _angle);
 }

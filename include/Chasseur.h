@@ -1,11 +1,12 @@
 #ifndef CHASSEUR_H
 #define CHASSEUR_H
 
+#include <stdio.h>
+
 #include "Bridge.h"
 #include "Shooter.h"
 #include "Sound.h"
 #include "config.h"
-#include <stdio.h>
 
 class Labyrinthe;
 
@@ -45,9 +46,9 @@ class Chasseur : public Shooter {
     }
 
     /**
-     * le chasseur ne pense pas!
+     * le chasseur pense !
      */
-    void update(void){};
+    void update();
 
     // clic droit.
     void right_click(bool shift, bool control);

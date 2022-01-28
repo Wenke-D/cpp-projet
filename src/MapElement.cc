@@ -2,13 +2,16 @@
 
 Location::Location(int x, int y) : x(x), y(y){};
 
-
 Location Location::operator+(const Location &other) const {
     return Location(this->x + other.x, this->y + other.y);
 }
 
 Location Location::operator-(const Location &other) const {
     return Location(this->x - other.x, this->y - other.y);
+}
+
+bool Location::operator==(const Location &other) const {
+    return this->x == other.x && this->y == other.y;
 }
 
 std::ostream &operator<<(std::ostream &out, const Location &p) {

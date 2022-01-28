@@ -12,7 +12,6 @@ bool Chasseur::move_aux(double dx, double dy) {
         _x += dx;
         _y += dy;
         this->bridge->updateHunterLocation(_x, _y);
-        cout << "hunter moving toward " << _angle << endl;
         return true;
     }
     return false;
@@ -49,4 +48,9 @@ void Chasseur::right_click(bool shift, bool control) {
         for (size_t i = 1; i < _l->_nguards; i++) {
             _l->_guards[i]->tomber();
         }
+}
+
+
+void Chasseur::update(){
+
 }

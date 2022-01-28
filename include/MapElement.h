@@ -38,6 +38,7 @@ class Location {
     ~Location(){};
     Location operator+(const Location& other) const;
     Location operator-(const Location& other) const;
+    bool operator==(const Location& other) const;
 };
 
 std::ostream &operator<<(std::ostream &out, const Location &p);
