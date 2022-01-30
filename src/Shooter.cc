@@ -1,4 +1,5 @@
 #include "Shooter.h"
+#include "Bridge.h"
 
 /**
  * Fait bouger la boule de feu du personnage.
@@ -9,10 +10,10 @@ bool Shooter::process_fireball(float dx, float dy) {
     float y = (bridge->get_hunter_y() - _fb->get_y()) / Environnement::scale;
     float dist2 = x * x + y * y;
 
-    this->when_ball_moving();
+    bool shouldExplode = this->when_ball_moving();
 
     // on bouge que dans le vide!
-    if (EMPTY == _l->data((int)((_fb->get_x() + dx) / Environnement::scale),
+    if (!shouldExplode && EMPTY == _l->data((int)((_fb->get_x() + dx) / Environnement::scale),
                           (int)((_fb->get_y() + dy) / Environnement::scale))) {
         return true;
     }
@@ -36,3 +37,16 @@ void Shooter::fire(int angle_vertical) {
            angle_vertical, _angle);
     _fb->init(_x, _y, 10., angle_vertical, _angle);
 }
+
+bool Shooter::receiveDamage(int value) {
+    if (health > 0) {
+        health -= value;
+        if (health <= 0) {
+            this->whenDead();
+        }
+        return health <= 0;
+    }
+    return true;
+}
+
+int Shooter::get_health() { return health; }

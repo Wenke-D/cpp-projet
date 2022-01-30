@@ -54,7 +54,9 @@ class Gardien : public Shooter {
 
     void fire(int angle_vertical) override;
 
-    void when_ball_moving() override;
+    void whenDead();
+
+    bool when_ball_moving() override;
 };
 
 #endif

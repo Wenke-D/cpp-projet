@@ -39,6 +39,11 @@ void Gardien::update() {
             firing = true;
         }
     }
+    /* Behavior of dead */
+    else{
+        return;
+    }
+
     /* Behaviors no matter in what state */
     // looking for hunter to update state
     bool rightDirection = look_for_hunter();
@@ -142,10 +147,12 @@ void Gardien::fire(int angle_vertical) {
     _fb->init(_x, _y, 10., 360, final_angle);
 }
 
-void Gardien::when_ball_moving() {
+bool Gardien::when_ball_moving() {
     bool isHit = bridge->hunterIsHit(_fb->get_x(), _fb->get_y());
     if (isHit) {
-        cout << "Hunter is hit: " << isHit << endl;
         bridge->hitHunter();
     }
+    return isHit;
 }
+
+void Gardien::whenDead() { this->rester_au_sol(); this->mind.state = State::dead; };

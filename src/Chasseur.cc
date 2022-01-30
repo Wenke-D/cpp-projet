@@ -1,15 +1,18 @@
 #include "Chasseur.h"
 
-
 bool Chasseur::move_aux(double dx, double dy) {
 
-    int v = _l->data((int)((_x + dx) / Environnement::scale),
-                     (int)((_y + dy) / Environnement::scale));
+    Location l = Location((int)((_x + dx) / Environnement::scale),
+                          (int)((_y + dy) / Environnement::scale));
+
+    int v = _l->data(l.x, l.y);
     if (EMPTY == v) {
         _x += dx;
         _y += dy;
-        this->bridge->updateHunterLocation(_x, _y);
         return true;
+    }
+    if (bridge->reachTreasure(l)) {
+        partie_terminee(true);
     }
     return false;
 }
@@ -21,8 +24,7 @@ void Chasseur::updateMyPlace() {}
  */
 Chasseur::Chasseur(Labyrinthe *l, Bridge *bridge, int x, int y)
     : Shooter(x * Environnement::scale, y * Environnement::scale, l, 0,
-              bridge) {
-}
+              bridge) {}
 
 /**
  *	Clic droit: par défaut fait tomber le premier gardien.
@@ -32,17 +34,18 @@ Chasseur::Chasseur(Labyrinthe *l, Bridge *bridge, int x, int y)
  */
 void Chasseur::right_click(bool shift, bool control) {
     if (shift)
-        for (size_t i = 1; i < _l->_nguards; i++) {
+        for (int i = 1; i < _l->_nguards; i++) {
             _l->_guards[i]->rester_au_sol();
         }
 
     else
-        for (size_t i = 1; i < _l->_nguards; i++) {
+        for (int i = 1; i < _l->_nguards; i++) {
             _l->_guards[i]->tomber();
         }
 }
 
+void Chasseur::update() {}
 
-void Chasseur::update(){
-
+bool Chasseur::when_ball_moving() {
+    return bridge->hitGuardien(_fb->get_x(), _fb->get_y());
 }

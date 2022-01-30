@@ -46,6 +46,11 @@ class Chasseur : public Shooter {
 
     // clic droit.
     void right_click(bool shift, bool control);
+
+    /**
+     * Determine if the ball hit a guardien
+     */
+    bool when_ball_moving();
 };
 
 #endif

@@ -1,18 +1,23 @@
 #pragma once
-#include "Bridge.h"
 #include "Mover.h"
-#include "config.h"
 #include "Sound.h"
+#include "config.h"
 
-
+class Bridge;
 
 const string HUNTER_FIRE_SOUND_PATH = get_sound_path("hunter_fire.wav");
 const string HUNTER_HIT_SOUND_PATH = get_sound_path("hunter_hit.wav");
 const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
 
+/**
+ * Shooter is a mover that can shoot and get hit
+ */
 class Shooter : public Mover {
-  public:
 
+  protected:
+    int health = 50;
+
+  public:
     // les sons.
     static Sound *_hunter_fire; // bruit de l'arme du chasseur.
     static Sound *_hunter_hit;  // cri du chasseur touché.
@@ -21,11 +26,11 @@ class Shooter : public Mover {
     Bridge *bridge;
 
     Shooter(int x, int y, Labyrinthe *l, const char *modele, Bridge *bridge)
-        : Mover(x, y, l, modele), bridge(bridge){
-          _hunter_fire = new Sound(HUNTER_FIRE_SOUND_PATH.c_str());
-          _hunter_hit = new Sound(HUNTER_HIT_SOUND_PATH.c_str());
-          _wall_hit = new Sound(HIT_WALL_SOUND_PATH.c_str());
-        };
+        : Mover(x, y, l, modele), bridge(bridge) {
+        _hunter_fire = new Sound(HUNTER_FIRE_SOUND_PATH.c_str());
+        _hunter_hit = new Sound(HUNTER_HIT_SOUND_PATH.c_str());
+        _wall_hit = new Sound(HIT_WALL_SOUND_PATH.c_str());
+    };
 
     /**
      * Fait bouger la boule de feu.
@@ -42,13 +47,28 @@ class Shooter : public Mover {
     virtual void fire(int angle_vertical) override;
 
     /**
-     * Event to trigger after the ball exploded.
+     * Event to be triggerred after the ball exploded.
      */
-    virtual void after_explonation(){}
+    virtual void after_explonation() {}
 
     /**
-     * Event to trriger when ball is moving.
-     * 
+     * Event to be trrigerred when ball is moving.
+     * @return return true if the ball should explode, false otherwise
      */
-    virtual void when_ball_moving(){}
+    virtual bool when_ball_moving() = 0;
+
+    /**
+     * Let the shooter receive the damage.
+     * @param value the damage amount
+     * @return if this shooter is dead.
+     */
+    virtual bool receiveDamage(int value);
+
+    virtual void whenDead(){};
+
+    /**
+     * Get health of the shooter
+     *
+     */
+    int get_health();
 };
