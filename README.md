@@ -16,7 +16,7 @@ L'excutable est produit à l'aide du `makefile`. Il est compatible dans Linux et
 
 ## Structure du projet
 - **build**: Sorties intermédiaires produites durant la compilation. Ses contenues serons supprimés par `make clean`.
-- **doc**: Documents de ce projet, y compris le **rapport**.
+- **doc**: Documents de ce projet.
 - **include**: Tous les fichiers `.h`
 - **lib**: Libraires externales, les `.o` précompilés.
 - **res**: Toutes les ressources externes, comme images, sons.
