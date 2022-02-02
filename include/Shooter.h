@@ -15,7 +15,7 @@ const string HIT_WALL_SOUND_PATH = get_sound_path("hit_wall.wav");
 class Shooter : public Mover {
 
   protected:
-    int health = 50;
+    int health;
 
   public:
     // les sons.
@@ -25,8 +25,10 @@ class Shooter : public Mover {
 
     Bridge *bridge;
 
-    Shooter(int x, int y, Labyrinthe *l, const char *modele, Bridge *bridge)
-        : Mover(x, y, l, modele), bridge(bridge) {
+  public:
+    Shooter(int health, int x, int y, Labyrinthe *l, const char *modele,
+            Bridge *bridge)
+        : Mover(x, y, l, modele), health(health), bridge(bridge) {
         _hunter_fire = new Sound(HUNTER_FIRE_SOUND_PATH.c_str());
         _hunter_hit = new Sound(HUNTER_HIT_SOUND_PATH.c_str());
         _wall_hit = new Sound(HIT_WALL_SOUND_PATH.c_str());
@@ -41,7 +43,7 @@ class Shooter : public Mover {
     bool process_fireball(float dx, float dy) override;
 
     /**
-     * fait tirer le personnage sur un ennemi (vous pouvez ignorer l'angle
+     * Fait tirer le personnage sur un ennemi (vous pouvez ignorer l'angle
      * vertical).
      */
     virtual void fire(int angle_vertical) override;

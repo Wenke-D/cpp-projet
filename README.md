@@ -22,8 +22,3 @@ L'excutable est produit à l'aide du `makefile`. Il est compatible dans Linux et
 - **res**: Toutes les ressources externes, comme images, sons.
 - **src**: Code source, on n'accepte que `.cc`
 - **test**: Code de test
-
-
-
-énoncé
-https://www.lri.fr/~pa/progcxx.html

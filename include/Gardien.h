@@ -1,9 +1,8 @@
 #ifndef GARDIEN_H
 #define GARDIEN_H
 
-#include <iostream>
 #include <cmath>
-
+#include <iostream>
 
 #include "Bridge.h"
 #include "Mind.h"
@@ -43,7 +42,7 @@ class Gardien : public Shooter {
 
   public:
     Gardien(Labyrinthe *l, Bridge *bridge, const char *modele, int x, int y)
-        : Shooter(x, y, l, modele, bridge) {}
+        : Shooter(GUARDIEN_HUEALTH, x, y, l, modele, bridge) {}
 
     // mon gardien pense très mal!
     void update(void);

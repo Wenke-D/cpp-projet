@@ -13,7 +13,9 @@ extern const string TEXTURE_DIR;
 
 extern const string MODELE_DIR;
 
-extern const int HEALTH;
+extern const int HUNTER_HEALTH;
+
+extern const int GUARDIEN_HUEALTH;
 
 /**
  * Return the full path of a sound file.

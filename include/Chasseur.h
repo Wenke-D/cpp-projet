@@ -5,6 +5,7 @@
 
 #include "Bridge.h"
 #include "Shooter.h"
+#include "config.h"
 
 class Labyrinthe;
 
@@ -42,7 +43,7 @@ class Chasseur : public Shooter {
     /**
      * le chasseur pense !
      */
-    void update();
+    void update(){cout << "I am thinking!" << endl;};
 
     // clic droit.
     void right_click(bool shift, bool control);

@@ -10,7 +10,9 @@ const string TEXTURE_DIR = RES_DIR + SEP + "textures";
 
 const string MODELE_DIR = RES_DIR + SEP + "modeles";
 
-const int HEALTH = 100;
+extern const int HUNTER_HEALTH = 100;
+
+extern const int GUARDIEN_HUEALTH = 50;
 
 string get_sound_path(const string &name) { return SOUND_DIR + SEP + name; }
 
