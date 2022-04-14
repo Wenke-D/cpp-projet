@@ -2,6 +2,10 @@
 
 un jeu de vidéo FPS, un rapport plus détaille se trouve doc/rapport.pdf
 
+Projet universitaire pour le cours introduction au C++.
+
+M1 QDCS, Université Paris-Saclay
+
 
 ## Env
 c++ version: c++11
