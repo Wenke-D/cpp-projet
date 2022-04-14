@@ -1,5 +1,9 @@
 # Projet CPP
 
+un jeu de vidéo FPS
+
+
+## Env
 c++ version: c++11
 c version: c11
 
