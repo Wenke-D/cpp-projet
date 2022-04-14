@@ -1,6 +1,6 @@
 # Projet CPP
 
-un jeu de vidéo FPS
+un jeu de vidéo FPS, un rapport plus détaille se trouve doc/rapport.pdf
 
 
 ## Env
