@@ -90,4 +90,4 @@ Before this course, I have a lot experience in Language C and Java programing. I
 This project also gives me a chance to pratice the tools of C family language. For example, the application of makefile to automatize the compilation and the management of .
 In this project, it's a little shame that we couldn't appy more advanced tecniques of memory management like share_ptr, unique_ptr. 
 
-By the end of these project, I believe I have acquired all basic notion of C++. 用C++ 应用了学过的OOP技术
+By the end of these project, I believe I have acquired all basic notion of C++ and applied OOP in C++.
